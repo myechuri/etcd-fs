@@ -142,7 +142,8 @@ func (me *EtcdFs) Rename(oldName string, newName string, context *fuse.Context) 
   etcdClient := me.NewEtcdClient()
   res, err := etcdClient.Get(oldName, false, false)
   originalValue := []byte(res.Node.Value)
-  _, err := etcdClient.Set(newName, originalValue, 0)
-  _, err := etcdClient.Delete(oldName, false)
+  newValue := bytes.NewBuffer(originalValue)
+  _, err = etcdClient.Set(newName, newValue.String(), 0)
+  _, err = etcdClient.Delete(oldName, false)
   return fuse.OK
 }
