@@ -3,6 +3,8 @@ etcd-fs
 
 Use etcd as a filesystem
 
+Forked from [etcd-fs](https://github.com/xetorthio/etcd-fs), with addition of ``rename`` functionality to support persistence of Flocker Control Agent state.
+
 *THis IS STILL WORK IN PROGRESS*
 
 Why using etcd as a fileystem?
