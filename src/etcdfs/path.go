@@ -24,6 +24,8 @@ func (me *EtcdFs) NewEtcdClient() *etcd.Client {
 }
 
 func (me *EtcdFs) Unlink(name string, context *fuse.Context) (code fuse.Status) {
+  me.lock.Lock()
+  defer me.lock.Unlock()
   if name == "" {
     return fuse.OK
   }
@@ -131,6 +133,8 @@ func (me *EtcdFs) OpenDir(name string, context *fuse.Context) (c []fuse.DirEntry
 }
 
 func (me *EtcdFs) Open(name string, flags uint32, context *fuse.Context) (file nodefs.File, code fuse.Status) {
+  me.lock.Lock()
+  defer me.lock.Unlock()
   _, err := me.NewEtcdClient().Get(name, false, false)
 
   if err != nil {
