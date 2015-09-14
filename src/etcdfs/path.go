@@ -145,6 +145,7 @@ func (me *EtcdFs) Open(name string, flags uint32, context *fuse.Context) (file n
   return NewEtcdFile(me.NewEtcdClient(), name), fuse.OK
 }
 
+// TODO: Error handling.
 func (me *EtcdFs) Rename(oldName string, newName string, context *fuse.Context) (code fuse.Status) {
   me.lock.Lock()
   defer me.lock.Unlock()
