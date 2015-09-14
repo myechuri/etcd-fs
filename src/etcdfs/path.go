@@ -1,9 +1,10 @@
 package etcdfs
 
 import(
+  "bytes"
   "log"
   "strings"
-  "bytes"
+  "sync"
 
   "github.com/hanwen/go-fuse/fuse"
   "github.com/hanwen/go-fuse/fuse/nodefs"
@@ -15,6 +16,7 @@ import(
 type EtcdFs struct {
   pathfs.FileSystem
   EtcdEndpoint string
+  lock sync.RWMutex
 }
 
 func (me *EtcdFs) NewEtcdClient() *etcd.Client {
@@ -140,6 +142,8 @@ func (me *EtcdFs) Open(name string, flags uint32, context *fuse.Context) (file n
 }
 
 func (me *EtcdFs) Rename(oldName string, newName string, context *fuse.Context) (code fuse.Status) {
+  me.lock.Lock()
+  defer me.lock.Unlock()
   etcdClient := me.NewEtcdClient()
   res,_ := etcdClient.Get(oldName, false, false)
   originalValue := []byte(res.Node.Value)
