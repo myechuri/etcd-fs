@@ -3,6 +3,7 @@ package etcdfs
 import(
   "log"
   "strings"
+  "bytes"
 
   "github.com/hanwen/go-fuse/fuse"
   "github.com/hanwen/go-fuse/fuse/nodefs"
