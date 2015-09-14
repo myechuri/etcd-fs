@@ -141,10 +141,10 @@ func (me *EtcdFs) Open(name string, flags uint32, context *fuse.Context) (file n
 
 func (me *EtcdFs) Rename(oldName string, newName string, context *fuse.Context) (code fuse.Status) {
   etcdClient := me.NewEtcdClient()
-  res, err := etcdClient.Get(oldName, false, false)
+  res,_ := etcdClient.Get(oldName, false, false)
   originalValue := []byte(res.Node.Value)
   newValue := bytes.NewBuffer(originalValue)
-  _, err = etcdClient.Set(newName, newValue.String(), 0)
-  _, err = etcdClient.Delete(oldName, false)
+  etcdClient.Set(newName, newValue.String(), 0)
+  etcdClient.Delete(oldName, false)
   return fuse.OK
 }
